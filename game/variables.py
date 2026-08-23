@@ -49,6 +49,12 @@ heal2 = pygame.image.load("heal.png").convert_alpha()
 heal2 = pygame.transform.scale(heal2,(30,30))
 swordI = pygame.image.load("sword.png").convert_alpha()
 swordI = pygame.transform.scale(swordI,(30,30))
+coinI = pygame.image.load("coin.png").convert_alpha()
+coinI = pygame.transform.scale(coinI,(20,20))
+buttonNuke = pygame.Rect(1100, 600, 200, 60)
+
+NUCLEAR_COST = 100
 
 
 keys= pygame.key.get_pressed()
+coins =0
