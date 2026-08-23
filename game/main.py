@@ -26,7 +26,11 @@ for j in range(5):
     swordB=medKit(random.randint(110,490),random.randint(300,900),swordI,1)
     swordL.append(swordB)
 sveDivs = nasi + njihovi
-
+coinL = []
+for j in range(12):
+    coinB=coin(random.randint(300,800),random.randint(150,300),coinI,10)
+    coinL.append(coinB)
+    print(coinL)
 running = True
 while running:
     for event in pygame.event.get():
@@ -67,5 +71,5 @@ while running:
     clock.tick(60)
 
 
-mainGame(sveDivs,medkit,njihovi,swordL,nasi)
+mainGame(sveDivs,medkit,njihovi,swordL,nasi,coinL)
 
