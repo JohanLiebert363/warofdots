@@ -4,34 +4,42 @@ from func1 import *
 from class1 import *
 import time
 import random
-
 CapitalRed = Capital(600, 30,redCapital,180,2, "red")
 CapitalBlue = Capital(600, 600,blueCapital,180,2,"blue")
 medNjihovi = medCenter(100,Y//2,medRed,"red")
 timer = time.time()
-def mainGame(sveDivs,medkit,njihovi,swordL,nasi):
+def mainGame(sveDivs, medkit, njihovi, swordL, nasi, coinL):
     running = True
     brzina = 0.5
 
+    coins = 0
+    nuclear_bombs = 0
 
     clicked_div = None
     is_dragging = False
-
     while running:
 
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_n:
+                    if nuclear_bombs > 0:
+                        nuclear_bomb(sveDivs, CapitalRed)
+                        nuclear_bombs -= 1
+                        print("Nuclear bomb used!")
             if event.type == pygame.QUIT:
                 running = False
-            if keys[pygame.K_ESCAPE]:
-                running = False
-                
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
 
+
+                    if buttonNuke.collidepoint(event.pos):
+                        if coins >= NUCLEAR_COST:
+                            coins -= NUCLEAR_COST
+                            nuclear_bombs += 1
+                            print("Bought nuclear bomb!")
+
                     for divizija in sveDivs:
-                        if divizija.team == "red":
-                            for div in nasi:
-                                redTarget = div
                         if divizija.rect.collidepoint(event.pos):
                             clicked_div = divizija
                             is_dragging = True
@@ -42,9 +50,10 @@ def mainGame(sveDivs,medkit,njihovi,swordL,nasi):
 
                     if is_dragging and clicked_div:
                         clicked_div.target = pygame.math.Vector2(event.pos)
+
                     is_dragging = False
                     clicked_div = None
-        
+                
         for div in sveDivs:
             div.update_movement(brzina)
 
@@ -73,6 +82,11 @@ def mainGame(sveDivs,medkit,njihovi,swordL,nasi):
             CapitalBlue,
             nasi
         )
+        coins = colect_coins(
+            nasi,
+            coinL,
+            coins
+        )
 
         for div in sveDivs:
             div.update_movement(brzina)
@@ -91,9 +105,10 @@ def mainGame(sveDivs,medkit,njihovi,swordL,nasi):
                     red.target = blue.rect.center
         textTimer = font.render(f"{minut:02d}:{seconds:02d}", True, white)
         
-
+        textCoin = font.render(f"{coins} coins", True, white)
         display_surface.blit(background2, (0, 0))
         display_surface.blit(textTimer, (0, 10))
+        display_surface.blit(textCoin, (0,60))
         medNjihovi.draw(display_surface)
         for div in sveDivs:
             div.draw(display_surface)  
@@ -103,6 +118,22 @@ def mainGame(sveDivs,medkit,njihovi,swordL,nasi):
                 kit.draw(display_surface)  
         for s in swordL:
             s.draw(display_surface)
+        for c in coinL:
+                c.draw(display_surface)
+        pygame.draw.rect(display_surface, (180, 30, 30), buttonNuke)
+
+        nukeText = font2.render(
+            f"NUKE ({NUCLEAR_COST})",
+            True,
+            white
+        )
+
+        nukeTextRect = nukeText.get_rect(
+            center=buttonNuke.center
+        )
+    
+
+        display_surface.blit(nukeText, nukeTextRect)
         if is_dragging and clicked_div:
             trenutni_mis = pygame.mouse.get_pos()
             pygame.draw.line(display_surface, white, clicked_div.rect.center, trenutni_mis, 3)
