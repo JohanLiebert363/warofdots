@@ -154,7 +154,7 @@ def heal(sveDivs, medNjihovi):
     for div in sveDivs:
         if div.rect.colliderect(medNjihovi.rect):
             if div.health < 100:
-                div.health +=1
+                div.health +=0.5
                 
 def healSpawn(sveDivs, medkit):
     for div in sveDivs:
@@ -179,7 +179,7 @@ def red_ai(sveDivs, njihovi, medNjihovi, capitalBlue,nasi):
     red_dead_percent = (original_red - len(red_alive)) / original_red
 
 
-    if red_dead_percent >= 0.70:
+    if red_dead_percent >= 0.60:
 
         for red in red_alive:
             red.target = pygame.math.Vector2(capitalBlue.rect.center)
@@ -202,3 +202,22 @@ def red_ai(sveDivs, njihovi, medNjihovi, capitalBlue,nasi):
 
         if red.health < 20:
             red.target = pygame.math.Vector2(medNjihovi.rect.center)
+coins=0
+def colect_coins(nasi, coinL, coins):
+    for div in nasi:
+        for c in coinL[:]:
+            if div.rect.colliderect(c.rect):
+                print("+10 coins")
+                coins += c.value
+                coinL.remove(c)
+
+    return coins
+def nuclear_bomb(sveDivs, capitalRed):
+
+    capitalRed.health -= 80
+
+    sveDivs[:] = [
+        div for div in sveDivs
+        if div.health > 0
+    ]
+
