@@ -91,4 +91,11 @@ class sword:
         self.boost = boost
     def draw(self,screen):
         screen.blit(self.image,self.rect)
-
+class coin:
+    def __init__(self,x,y,image,value):
+        
+        self.image = image
+        self.rect = self.image.get_rect(center=(x,y))
+        self.value = value
+    def draw(self,screen):
+        screen.blit(self.image,self.rect)
